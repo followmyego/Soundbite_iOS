@@ -101,10 +101,25 @@ class SoundController: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDelegate 
                     break
                 default:
                     print("Export Successfully Finished")
+                    DispatchQueue.main.async {
+                        self.mergeAudio()
+                    }
                     break
                 }
             }
         }
+        
+    }
+    
+    func mergeAudio() {
+        
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let finishedFilesDirectoryPath = documentsDirectory.appendingPathComponent(DirectoryNames.finishedFiles)
+        let audioFileURL = finishedFilesDirectoryPath.appendingPathComponent("\(getFileCount(DirectoryNames.finishedFiles)).m4a")
+        
+        let soundbitDirectoryPath = documentsDirectory.appendingPathComponent(DirectoryNames.soundbits)
+        
+        //get all audio files from directory
         
     }
     

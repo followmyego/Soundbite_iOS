@@ -13,7 +13,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="SoundBite" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Main" id="BYZ-38-t0r" customClass="ViewController" customModule="SoundBite" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -22,58 +22,88 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YWE-zK-kMu">
-                                <rect key="frame" x="112" y="92" width="150" height="50"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lo8-Lb-WMI">
+                                <rect key="frame" x="135" y="485" width="110" height="50"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="WAz-mf-Iax"/>
+                                    <constraint firstAttribute="width" constant="110" id="r51-wp-ljp"/>
+                                    <constraint firstAttribute="height" constant="50" id="yoJ-Vp-5MC"/>
                                 </constraints>
-                                <state key="normal" title="Record"/>
+                                <state key="normal" title="Finish" image="doneButton"/>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vya-vX-vYm">
-                                <rect key="frame" x="112" y="150" width="150" height="50"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mPj-uf-xsu">
+                                <rect key="frame" x="165" y="559" width="50" height="50"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="7cb-Ea-on0"/>
+                                    <constraint firstAttribute="width" constant="50" id="1Q2-br-eVe"/>
+                                    <constraint firstAttribute="height" constant="50" id="jwS-p1-1To"/>
                                 </constraints>
-                                <state key="normal" title="Play"/>
+                                <state key="normal" title="Button" image="xIcon2"/>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EBw-Lc-lZC">
-                                <rect key="frame" x="112" y="208" width="150" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="rPg-HP-Hy4"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JEy-cO-hwk">
+                                <rect key="frame" x="16" y="20" width="71" height="70"/>
+                                <state key="normal" image="menuIcon"/>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lo8-Lb-WMI">
-                                <rect key="frame" x="112" y="266" width="150" height="50"/>
-                                <state key="normal" title="Finish"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ready" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="st4-4n-9iP">
+                                <rect key="frame" x="105" y="28" width="168" height="62"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="66a-4z-5PF">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="20"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mainScreenDesign" translatesAutoresizingMaskIntoConstraints="NO" id="fZM-tT-21t">
+                                <rect key="frame" x="0.0" y="20" width="375" height="150"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YWE-zK-kMu">
+                                <rect key="frame" x="99" y="243" width="181" height="180"/>
+                                <state key="normal" backgroundImage="button"/>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="YWE-zK-kMu" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="72" id="2Gl-xY-t4m"/>
-                            <constraint firstItem="vya-vX-vYm" firstAttribute="trailing" secondItem="EBw-Lc-lZC" secondAttribute="trailing" id="COX-Wn-WJT"/>
-                            <constraint firstItem="EBw-Lc-lZC" firstAttribute="leading" secondItem="Lo8-Lb-WMI" secondAttribute="leading" id="JKl-iZ-kzr"/>
-                            <constraint firstItem="EBw-Lc-lZC" firstAttribute="top" secondItem="vya-vX-vYm" secondAttribute="bottom" constant="8" symbolic="YES" id="LLn-cI-GNT"/>
-                            <constraint firstItem="YWE-zK-kMu" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ORT-y0-746"/>
-                            <constraint firstItem="vya-vX-vYm" firstAttribute="leading" secondItem="EBw-Lc-lZC" secondAttribute="leading" id="OjC-Ru-JGc"/>
-                            <constraint firstItem="YWE-zK-kMu" firstAttribute="trailing" secondItem="vya-vX-vYm" secondAttribute="trailing" id="Oy6-Cg-J77"/>
-                            <constraint firstItem="YWE-zK-kMu" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="96" id="U0t-De-0Dq"/>
-                            <constraint firstItem="EBw-Lc-lZC" firstAttribute="trailing" secondItem="Lo8-Lb-WMI" secondAttribute="trailing" id="Vyy-pC-66C"/>
-                            <constraint firstItem="YWE-zK-kMu" firstAttribute="leading" secondItem="vya-vX-vYm" secondAttribute="leading" id="iZl-7M-15b"/>
-                            <constraint firstItem="Lo8-Lb-WMI" firstAttribute="top" secondItem="EBw-Lc-lZC" secondAttribute="bottom" constant="8" symbolic="YES" id="kpM-DG-S6f"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Lo8-Lb-WMI" secondAttribute="bottom" constant="351" id="r8F-V4-XXc"/>
-                            <constraint firstItem="vya-vX-vYm" firstAttribute="top" secondItem="YWE-zK-kMu" secondAttribute="bottom" constant="8" symbolic="YES" id="wms-km-qvo"/>
+                            <constraint firstItem="YWE-zK-kMu" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="4Ev-zG-tbB"/>
+                            <constraint firstItem="st4-4n-9iP" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" symbolic="YES" id="4JQ-sL-bFa"/>
+                            <constraint firstItem="YWE-zK-kMu" firstAttribute="top" secondItem="fZM-tT-21t" secondAttribute="bottom" constant="73" id="4xN-vq-LWc"/>
+                            <constraint firstItem="Lo8-Lb-WMI" firstAttribute="centerX" secondItem="mPj-uf-xsu" secondAttribute="centerX" id="5B7-yJ-MB7"/>
+                            <constraint firstItem="66a-4z-5PF" firstAttribute="trailing" secondItem="fZM-tT-21t" secondAttribute="trailing" id="5gF-9x-Xq8"/>
+                            <constraint firstItem="st4-4n-9iP" firstAttribute="centerX" secondItem="YWE-zK-kMu" secondAttribute="centerX" id="5xu-ri-X9J"/>
+                            <constraint firstItem="66a-4z-5PF" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="6LP-h5-XjJ"/>
+                            <constraint firstItem="fZM-tT-21t" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="7FK-p5-0C1"/>
+                            <constraint firstItem="Lo8-Lb-WMI" firstAttribute="top" secondItem="YWE-zK-kMu" secondAttribute="bottom" constant="62" id="AzB-p2-JCG"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="mPj-uf-xsu" secondAttribute="bottom" constant="58" id="C3c-1n-ISu"/>
+                            <constraint firstItem="JEy-cO-hwk" firstAttribute="bottom" secondItem="st4-4n-9iP" secondAttribute="bottom" id="EqT-XH-0G3"/>
+                            <constraint firstItem="mPj-uf-xsu" firstAttribute="top" secondItem="Lo8-Lb-WMI" secondAttribute="bottom" constant="24" id="NIx-2B-vhm"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="st4-4n-9iP" secondAttribute="trailing" constant="86" id="O9F-B6-HdK"/>
+                            <constraint firstAttribute="trailing" secondItem="66a-4z-5PF" secondAttribute="trailing" id="YeD-14-A1i"/>
+                            <constraint firstItem="JEy-cO-hwk" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="bYF-jn-DU0"/>
+                            <constraint firstItem="66a-4z-5PF" firstAttribute="leading" secondItem="fZM-tT-21t" secondAttribute="leading" id="byE-ls-Vym"/>
+                            <constraint firstItem="YWE-zK-kMu" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="83" id="jHI-Dp-Ed6"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="YWE-zK-kMu" secondAttribute="trailing" constant="79" id="nIj-aB-uCc"/>
+                            <constraint firstItem="st4-4n-9iP" firstAttribute="top" secondItem="66a-4z-5PF" secondAttribute="bottom" constant="8" symbolic="YES" id="nNV-n2-Xcf"/>
+                            <constraint firstItem="66a-4z-5PF" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="nQ1-Sm-Yjf"/>
+                            <constraint firstItem="YWE-zK-kMu" firstAttribute="centerX" secondItem="Lo8-Lb-WMI" secondAttribute="centerX" id="oIL-Or-wl7"/>
+                            <constraint firstItem="fZM-tT-21t" firstAttribute="top" secondItem="JEy-cO-hwk" secondAttribute="top" id="pWk-H1-2QM"/>
+                            <constraint firstItem="st4-4n-9iP" firstAttribute="leading" secondItem="JEy-cO-hwk" secondAttribute="trailing" constant="18" id="uKQ-Fd-bcT"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="JEy-cO-hwk" secondAttribute="bottom" constant="577" id="yJn-qo-Jnk"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="finishButton" destination="Lo8-Lb-WMI" id="6MP-1p-HJO"/>
-                        <outlet property="playButton" destination="vya-vX-vYm" id="Lne-Hv-eMb"/>
+                        <outlet property="menuButton" destination="JEy-cO-hwk" id="Xow-1q-V3H"/>
                         <outlet property="recordButton" destination="YWE-zK-kMu" id="e1l-v6-OQp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="136.80000000000001" y="137.18140929535232"/>
+            <point key="canvasLocation" x="24.800000000000001" y="113.79310344827587"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="button" width="90" height="90"/>
+        <image name="doneButton" width="113" height="51"/>
+        <image name="mainScreenDesign" width="187" height="94"/>
+        <image name="menuIcon" width="28" height="26"/>
+        <image name="xIcon2" width="97" height="97"/>
+    </resources>
 </document>

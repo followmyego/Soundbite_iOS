@@ -11,6 +11,7 @@ import UIKit
 class ViewController: UIViewController {
     @IBOutlet weak var recordButton: UIButton!
     @IBOutlet weak var finishButton: UIButton!
+    @IBOutlet weak var menuButton: UIButton!
     
     var soundController: SoundController!
     
@@ -25,6 +26,8 @@ class ViewController: UIViewController {
         recordButton.addTarget(self, action: #selector(recordButtonPressed(sender:)), for: .touchUpInside)
         
         finishButton.addTarget(self, action: #selector(finishButtonPressed(sender:)), for: .touchUpInside)
+        
+        menuButton.addTarget(self, action: #selector(menuButtonPressed(sender:)), for: .touchUpInside)
         
         soundController = SoundController()
         soundController.startRecording()
@@ -53,6 +56,12 @@ class ViewController: UIViewController {
     func finishButtonPressed(sender: UIButton) {
         
         soundController.finishedSoundbite()
+        
+    }
+    
+    func menuButtonPressed(sender: UIButton) {
+        
+        
         
     }
 
