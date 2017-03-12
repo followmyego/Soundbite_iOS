@@ -72,6 +72,14 @@ class SoundController: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDelegate 
         
     }
     
+    func restartRecording() {
+        
+        if recorder != nil && recorder.isRecording {
+            recorder.deleteRecording()
+        }
+        
+    }
+    
     func exportAsset(_ asset: AVAsset, _ directory: URL) {
         
         let fileManager = FileManager.default
