@@ -59,7 +59,7 @@
                                 <rect key="frame" x="99" y="243" width="181" height="180"/>
                                 <state key="normal" backgroundImage="button"/>
                             </button>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap the button to save the last 10 secs of recoding." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9ns-dH-ZTm">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap the button to save the last 10 secs of recording." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9ns-dH-ZTm">
                                 <rect key="frame" x="45" y="520" width="284" height="55"/>
                                 <fontDescription key="fontDescription" name="Chalet-NewYorkNineteenEighty" family="Chalet" pointSize="20"/>
                                 <color key="textColor" red="0.79599106311798096" green="0.79612869024276733" blue="0.79598242044448853" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -112,6 +112,7 @@
                         <outlet property="finishButton" destination="Lo8-Lb-WMI" id="6MP-1p-HJO"/>
                         <outlet property="instructionLabel" destination="9ns-dH-ZTm" id="JW6-5u-O6Q"/>
                         <outlet property="menuButton" destination="JEy-cO-hwk" id="Xow-1q-V3H"/>
+                        <outlet property="readyButton" destination="st4-4n-9iP" id="YM9-3i-aJK"/>
                         <outlet property="recordButton" destination="YWE-zK-kMu" id="e1l-v6-OQp"/>
                     </connections>
                 </viewController>

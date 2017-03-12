@@ -9,6 +9,7 @@
 import UIKit
 
 class ViewController: UIViewController {
+    @IBOutlet weak var readyButton: UILabel!
     @IBOutlet weak var menuButton: UIButton!
     @IBOutlet weak var recordButton: UIButton!
     @IBOutlet weak var finishButton: UIButton!
@@ -25,6 +26,12 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         self.view.window?.backgroundColor = .white
+        
+        finishButton.alpha = 0
+        cancelButton.alpha = 0
+        
+        readyButton.font = UIFont(name: "Chalet-NewYorkNineteenEighty", size: 24)
+        instructionLabel.font = UIFont(name: "Chalet-NewYorkNineteenEighty", size: 20)
         
         startTimer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(activateSoundbiteButton(timer:)), userInfo: nil, repeats: false)
 
@@ -77,6 +84,15 @@ class ViewController: UIViewController {
     func recordButtonPressed(sender: UIButton) {
         
         soundController.saveSoundbite()
+        
+        UIView.animate(withDuration: 0.5) {
+        
+            self.finishButton.alpha = 1
+            self.cancelButton.alpha = 1
+
+            self.instructionLabel.alpha = 0
+            
+        }
         
     }
     

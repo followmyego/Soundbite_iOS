@@ -40,6 +40,10 @@ class DrawerView: UIView, AVAudioPlayerDelegate, UITableViewDelegate, UITableVie
         
         self.backgroundColor = .white
         
+        self.layer.shadowOffset = CGSize(width: 5, height: 5)
+        self.layer.shadowOpacity = 0.5
+        self.layer.shadowRadius = 10
+        
         self.statusBarView = UIView(frame: CGRect(x: 0, y: 0, width: self.bounds.width, height: UIApplication.shared.statusBarFrame.height))
         self.statusBarView.backgroundColor = UIColor(colorLiteralRed: 255/255, green: 95/255, blue: 95/255, alpha: 1)
         self.addSubview(statusBarView)
