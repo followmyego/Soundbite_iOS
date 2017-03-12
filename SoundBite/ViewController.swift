@@ -10,7 +10,6 @@ import UIKit
 
 class ViewController: UIViewController {
     @IBOutlet weak var recordButton: UIButton!
-    @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var finishButton: UIButton!
     
     var soundController: SoundController!
@@ -24,7 +23,7 @@ class ViewController: UIViewController {
 
         recordButton.isEnabled = false
         recordButton.addTarget(self, action: #selector(recordButtonPressed(sender:)), for: .touchUpInside)
-        playButton.addTarget(self, action: #selector(playButtonPressed(sender:)), for: .touchUpInside)
+        
         finishButton.addTarget(self, action: #selector(finishButtonPressed(sender:)), for: .touchUpInside)
         
         soundController = SoundController()
@@ -39,24 +38,21 @@ class ViewController: UIViewController {
 
     func recordButtonPressed(sender: UIButton) {
         
-        
+        soundController.saveSoundbite()
         
     }
     
     func activateSoundbiteButton(timer: Timer) {
         
         recordButton.isEnabled = true
+        startTimer.invalidate()
+        startTimer = nil
         
-    }
-    
-    func playButtonPressed(sender: UIButton) {
-        soundController.startPlaying()
     }
     
     func finishButtonPressed(sender: UIButton) {
         
-        soundController.stopRecording()
-        soundController.timer.invalidate()
+        soundController.finishedSoundbite()
         
     }
 

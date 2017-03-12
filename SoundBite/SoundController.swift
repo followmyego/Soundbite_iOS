@@ -32,7 +32,9 @@ class SoundController: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDelegate 
     var recorder: AVAudioRecorder!
     var player: AVAudioPlayer!
     
-    var timer: Timer!
+    var markers = [Int]()
+    
+    var startTime = Date()
     
     override init() {
         super.init()
@@ -41,73 +43,75 @@ class SoundController: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDelegate 
         self.createDirectory(DirectoryNames.soundbits)
         self.createDirectory(DirectoryNames.finishedFiles)
         
-        setupRecorder()
-        print(getFileCount())
-        
-        timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(timerFired), userInfo: nil, repeats: true)
-        
-        self.startRecording()
-        
-    }
-    
-    func timerFired(timer: Timer) {
-        
-        self.stopRecording()
-        
+        self.setupRecorder()
         self.startRecording()
         
     }
     
     func saveSoundbite() {
         
+        let markerDouble = Date().timeIntervalSince(startTime)
+        
+        let marker = Int(markerDouble)
+        
+        self.markers.append(marker)
+        
+    }
+    
+    func finishedSoundbite() {
+        
         self.stopRecording()
         
         let audioURL = self.recorder.url
         
-        if let asset = AVAsset.init(url: url) as? AVAsset {
-            let name = "\(getFileCount(DirectoryNames.soundbits)).m4a"
-            exportAsset(asset, name)
-        }
+        let asset = AVAsset.init(url: audioURL)
         
-        self.startRecording()
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let directoryPath = documentsDirectory.appendingPathComponent(DirectoryNames.soundbits)
+        exportAsset(asset, directoryPath)
         
     }
     
-    func exportAsset(_ asset: AVAsset, _ name: String) {
+    func exportAsset(_ asset: AVAsset, _ directory: URL) {
         
         let fileManager = FileManager.default
         
-        let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let directoryPath = documentsDirectory.appendingPathComponent(DirectoryNames.soundbits)
-        let trimmedFileURL = directoryPath.appendingPathComponent(name)
-        
-        print("Saving to \(trimmedFileURL.absoluteString)")
-        
-        if fileManager.fileExists(atPath: trimmedFileURL.absoluteString) {
-            print("File exists")
+        for marker in self.markers {
+            if marker < 10 { continue }
+            let soundbitName = "\(getFileCount(DirectoryNames.soundbits)).m4a"
+            let soundbitPath = directory.appendingPathComponent(soundbitName)
+            if fileManager.fileExists(atPath: soundbitPath.absoluteString) {
+                print("File exists")
+            }
+            let exporter = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetAppleM4A)
+            exporter?.outputFileType = AVFileTypeAppleM4A
+            exporter?.outputURL = soundbitPath
+            let startTime = CMTimeMake(Int64(marker - 10), 1)
+            let stopTime = CMTimeMake(Int64(marker), 1)
+            let exportTimeRange = CMTimeRangeFromTimeToTime(startTime, stopTime)
+            exporter?.timeRange = exportTimeRange
+            
+            exporter?.exportAsynchronously() {
+                switch exporter!.status {
+                case .cancelled:
+                    print("Export failed")
+                    break
+                case .failed:
+                    print("Export cancelled")
+                    break
+                default:
+                    print("Export Successfully Finished")
+                    break
+                }
+            }
         }
-        
-        let exporter = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetAppleM4A)
-        exporter?.outputFileType = AVFileTypeAppleM4A
-        exporter?.outputURL = trimmedFileURL
-        
-        let soundbitsFileCount = getFileCount(DirectoryNames.soundbits)
-        
-        if soundbitsFileCount < 1 {
-            print("Error: soundbits file count is less than 1")
-            return
-        }
-        
-        let duration = CMTimeGetSeconds(asset.duration)
-        
-        let previousSoundbitFileStartTime = CMTimeMake(<#T##value: Int64##Int64#>, <#T##timescale: Int32##Int32#>)
         
     }
     
     func getFileCount(_ directoryName: String) -> Int {
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let directoryPath = documentsDirectory.appendingPathComponent(name)
-        let dirContents = try? fileManager.contentsOfDirectory(atPath: directoryPath)
+        let directoryPath = documentsDirectory.appendingPathComponent(directoryName)
+        let dirContents = try? FileManager.default.contentsOfDirectory(atPath: directoryPath.path)
         let count = dirContents?.count
         return count ?? 0
     }
