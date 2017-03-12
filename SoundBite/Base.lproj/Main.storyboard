@@ -1,14 +1,19 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11134" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11106"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="SoundBite" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -16,11 +21,59 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YWE-zK-kMu">
+                                <rect key="frame" x="112" y="92" width="150" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="WAz-mf-Iax"/>
+                                </constraints>
+                                <state key="normal" title="Record"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vya-vX-vYm">
+                                <rect key="frame" x="112" y="150" width="150" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="7cb-Ea-on0"/>
+                                </constraints>
+                                <state key="normal" title="Play"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EBw-Lc-lZC">
+                                <rect key="frame" x="112" y="208" width="150" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="rPg-HP-Hy4"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lo8-Lb-WMI">
+                                <rect key="frame" x="112" y="266" width="150" height="50"/>
+                                <state key="normal" title="Finish"/>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="YWE-zK-kMu" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="72" id="2Gl-xY-t4m"/>
+                            <constraint firstItem="vya-vX-vYm" firstAttribute="trailing" secondItem="EBw-Lc-lZC" secondAttribute="trailing" id="COX-Wn-WJT"/>
+                            <constraint firstItem="EBw-Lc-lZC" firstAttribute="leading" secondItem="Lo8-Lb-WMI" secondAttribute="leading" id="JKl-iZ-kzr"/>
+                            <constraint firstItem="EBw-Lc-lZC" firstAttribute="top" secondItem="vya-vX-vYm" secondAttribute="bottom" constant="8" symbolic="YES" id="LLn-cI-GNT"/>
+                            <constraint firstItem="YWE-zK-kMu" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ORT-y0-746"/>
+                            <constraint firstItem="vya-vX-vYm" firstAttribute="leading" secondItem="EBw-Lc-lZC" secondAttribute="leading" id="OjC-Ru-JGc"/>
+                            <constraint firstItem="YWE-zK-kMu" firstAttribute="trailing" secondItem="vya-vX-vYm" secondAttribute="trailing" id="Oy6-Cg-J77"/>
+                            <constraint firstItem="YWE-zK-kMu" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="96" id="U0t-De-0Dq"/>
+                            <constraint firstItem="EBw-Lc-lZC" firstAttribute="trailing" secondItem="Lo8-Lb-WMI" secondAttribute="trailing" id="Vyy-pC-66C"/>
+                            <constraint firstItem="YWE-zK-kMu" firstAttribute="leading" secondItem="vya-vX-vYm" secondAttribute="leading" id="iZl-7M-15b"/>
+                            <constraint firstItem="Lo8-Lb-WMI" firstAttribute="top" secondItem="EBw-Lc-lZC" secondAttribute="bottom" constant="8" symbolic="YES" id="kpM-DG-S6f"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Lo8-Lb-WMI" secondAttribute="bottom" constant="351" id="r8F-V4-XXc"/>
+                            <constraint firstItem="vya-vX-vYm" firstAttribute="top" secondItem="YWE-zK-kMu" secondAttribute="bottom" constant="8" symbolic="YES" id="wms-km-qvo"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="finishButton" destination="Lo8-Lb-WMI" id="6MP-1p-HJO"/>
+                        <outlet property="playButton" destination="vya-vX-vYm" id="Lne-Hv-eMb"/>
+                        <outlet property="recordButton" destination="YWE-zK-kMu" id="e1l-v6-OQp"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="136.80000000000001" y="137.18140929535232"/>
         </scene>
     </scenes>
 </document>
