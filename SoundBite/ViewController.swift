@@ -22,6 +22,8 @@ class ViewController: UIViewController {
     
     var drawerView: DrawerView!
     
+    var statusBarView: UIView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -29,6 +31,11 @@ class ViewController: UIViewController {
         
         finishButton.alpha = 0
         cancelButton.alpha = 0
+        
+        statusBarView = UIView(frame: CGRect(x: -view.bounds.width*0.8, y: 0, width: view.bounds.width*1.8, height: UIApplication.shared.statusBarFrame.height))
+        self.statusBarView.backgroundColor = UIColor(colorLiteralRed: 255/255, green: 95/255, blue: 95/255, alpha: 1)
+        
+        self.view.addSubview(self.statusBarView)
         
         readyButton.font = UIFont(name: "Chalet-NewYorkNineteenEighty", size: 24)
         instructionLabel.font = UIFont(name: "Chalet-NewYorkNineteenEighty", size: 20)
@@ -44,10 +51,10 @@ class ViewController: UIViewController {
         
         cancelButton.addTarget(self, action: #selector(cancelButtonPressed(sender:)), for: .touchUpInside)
         
-        drawerView = DrawerView(frame: CGRect(x: -view.bounds.width*0.8, y: 0, width: view.bounds.width*0.8, height: view.bounds.height))
+        drawerView = DrawerView(frame: CGRect(x: -view.bounds.width*0.8, y: UIApplication.shared.statusBarFrame.height, width: view.bounds.width*0.8, height: view.bounds.height-UIApplication.shared.statusBarFrame.height))
         view.addSubview(drawerView)
         
-        soundController = SoundController()
+        soundController = SoundController.shared
         soundController.startRecording()
     
     }

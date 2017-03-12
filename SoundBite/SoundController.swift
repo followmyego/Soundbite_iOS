@@ -9,12 +9,6 @@
 import Foundation
 import AVFoundation
 
-protocol SoundControllerDelegate {
-    
-    
-    
-}
-
 struct DirectoryNames {
     
     static let rawfiles = "rawfiles"
@@ -25,8 +19,8 @@ struct DirectoryNames {
 
 class SoundController: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDelegate {
     
-    var delegate: SoundControllerDelegate?
-    
+    static let shared = SoundController()
+        
     let session = AVAudioSession.sharedInstance()
     
     var recorder: AVAudioRecorder!
@@ -43,9 +37,6 @@ class SoundController: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDelegate 
         self.createDirectory(DirectoryNames.soundbits)
         self.createDirectory(DirectoryNames.finishedFiles)
         
-        self.setupRecorder()
-        self.startRecording()
-        
     }
     
     func saveSoundbite() {
@@ -55,6 +46,8 @@ class SoundController: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDelegate 
         let marker = Int(markerDouble)
         
         self.markers.append(marker)
+        
+        print(marker)
         
     }
     
@@ -67,7 +60,8 @@ class SoundController: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDelegate 
         let asset = AVAsset.init(url: audioURL)
         
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let directoryPath = documentsDirectory.appendingPathComponent(DirectoryNames.soundbits)
+        let directoryPath = URL(fileURLWithPath: documentsDirectory.appendingPathComponent(DirectoryNames.soundbits).path)
+        deleteAllRecordings(directoryPath)
         exportAsset(asset, directoryPath)
         
     }
@@ -84,16 +78,18 @@ class SoundController: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDelegate 
         
         let fileManager = FileManager.default
         
+        let filesToExport = markers.count
+        var exportedFiles = 0
+        
         for marker in self.markers {
-            if marker < 10 { continue }
             let soundbitName = "\(getFileCount(DirectoryNames.soundbits)).m4a"
-            let soundbitPath = directory.appendingPathComponent(soundbitName)
-            if fileManager.fileExists(atPath: soundbitPath.absoluteString) {
+            let soundbitURL = URL(fileURLWithPath: directory.appendingPathComponent(soundbitName).path)
+            if fileManager.fileExists(atPath: soundbitURL.absoluteString) {
                 print("File exists")
             }
             let exporter = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetAppleM4A)
             exporter?.outputFileType = AVFileTypeAppleM4A
-            exporter?.outputURL = soundbitPath
+            exporter?.outputURL = URL(fileURLWithPath: soundbitURL.path)
             let startTime = CMTimeMake(Int64(marker - 10), 1)
             let stopTime = CMTimeMake(Int64(marker), 1)
             let exportTimeRange = CMTimeRangeFromTimeToTime(startTime, stopTime)
@@ -101,19 +97,24 @@ class SoundController: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDelegate 
             
             exporter?.exportAsynchronously() {
                 switch exporter!.status {
-                case .cancelled:
+                case .failed:
                     print("Export failed")
                     break
-                case .failed:
+                case .cancelled:
                     print("Export cancelled")
                     break
                 default:
                     print("Export Successfully Finished")
-                    DispatchQueue.main.async {
-                        self.mergeAudio()
-                    }
                     break
                 }
+            
+                exportedFiles += 1
+                if exportedFiles == filesToExport {
+                    //DispatchQueue.main.async {
+                        self.mergeAudio()
+                    //}
+                }
+                
             }
         }
         
@@ -122,12 +123,56 @@ class SoundController: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDelegate 
     func mergeAudio() {
         
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let finishedFilesDirectoryPath = documentsDirectory.appendingPathComponent(DirectoryNames.finishedFiles)
-        let audioFileURL = finishedFilesDirectoryPath.appendingPathComponent("\(getFileCount(DirectoryNames.finishedFiles)).m4a")
         
         let soundbitDirectoryPath = documentsDirectory.appendingPathComponent(DirectoryNames.soundbits)
         
         //get all audio files from directory
+        
+        let soundbits = try? FileManager.default.contentsOfDirectory(atPath: soundbitDirectoryPath.path)
+        
+        var mergeURLs = [URL]()
+        
+        for soundbit in soundbits! {
+            //let soundbitURL = URL(fileURLWithPath: soundbitDirectoryPath.appendingPathComponent(soundbit).path)
+            let soundbitPath = soundbitDirectoryPath.appendingPathComponent(soundbit)
+            let soundbitURL = URL(fileURLWithPath: soundbitPath.path)
+            mergeURLs.append(soundbitURL)
+        }
+        
+        let composition = AVMutableComposition()
+        
+        for i in 0..<mergeURLs.count {
+            
+            let compositionTrack = composition.addMutableTrack(withMediaType: AVMediaTypeAudio, preferredTrackID: CMPersistentTrackID())
+            
+            let avAsset = AVURLAsset(url: mergeURLs[i])
+            let track = avAsset.tracks(withMediaType: AVMediaTypeAudio)[0]
+            let timeRange = CMTimeRangeMake(kCMTimeZero, track.timeRange.duration)
+            
+            try? compositionTrack.insertTimeRange(timeRange, of: track, at: composition.duration)
+            
+        }
+        
+        let finishedFilesDirectoryPath = documentsDirectory.appendingPathComponent(DirectoryNames.finishedFiles)
+        let finishedFileURL = finishedFilesDirectoryPath.appendingPathComponent("\(getFileCount(DirectoryNames.finishedFiles)).m4a")
+        
+        let assetExport = AVAssetExportSession(asset: composition, presetName: AVAssetExportPresetAppleM4A)
+        assetExport?.outputFileType = AVFileTypeAppleM4A
+        assetExport?.outputURL = finishedFileURL
+        
+        assetExport?.exportAsynchronously {
+            switch assetExport!.status {
+            case .failed:
+                print("Failed")
+                break
+            case .cancelled:
+                print("Cancelled")
+                break
+            default:
+                print("Successfully exported!")
+                break
+            }
+        }
         
     }
     
@@ -204,10 +249,7 @@ class SoundController: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDelegate 
         
         if recorder == nil {
             print("recorder nil")
-            /*recorder.setTitle("Pause", for: .normal)
-            playButton.isEnabled = false
-            stopButton.isEnabled = true
-            recordWithPermission(true)*/
+            recordWithPermission()
             return
         }
         
@@ -222,21 +264,19 @@ class SoundController: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDelegate 
             playButton.isEnabled = false
             stopButton.isEnabled = true
             recorder.record()*/
-            recordWithPermission(false)
+            recordWithPermission()
         }
         
     }
     
-    func recordWithPermission(_ setup:Bool) {
+    func recordWithPermission() {
 
         if (session.responds(to: #selector(AVAudioSession.requestRecordPermission(_:)))) {
             AVAudioSession.sharedInstance().requestRecordPermission({(granted: Bool)-> Void in
                 if granted {
                     print("Permission to record granted")
                     self.setSessionPlayAndRecord()
-                    if setup {
-                        self.setupRecorder()
-                    }
+                    self.setupRecorder()
                     self.recorder.record()
                     print("WORKS")
                     
@@ -274,19 +314,17 @@ class SoundController: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDelegate 
         
     }
     
-    func deleteAllRecordings() {
-        let docsDir =
-            NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+    func deleteAllRecordings(_ directoryPath: URL) {
         
         let fileManager = FileManager.default
         
         do {
-            let files = try fileManager.contentsOfDirectory(atPath: docsDir)
+            let files = try fileManager.contentsOfDirectory(atPath: directoryPath.path)
             var recordings = files.filter( { (name: String) -> Bool in
                 return (name.hasPrefix("recording") && name.hasSuffix("m4a"))
             })
             for i in 0 ..< recordings.count {
-                let path = docsDir + "/" + recordings[i]
+                let path = directoryPath.appendingPathComponent(recordings[i]).path
                 
                 print("removing \(path)")
                 do {
@@ -298,25 +336,16 @@ class SoundController: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDelegate 
             }
             
         } catch let error as NSError {
-            print("could not get contents of directory at \(docsDir)")
+            print("could not get contents of directory at \(directoryPath)")
             print(error.localizedDescription)
         }
         
     }
     
-    func startPlaying() {
-        
-        var url:URL?
-        if self.recorder != nil {
-            url = self.recorder.url
-        } else {
-            return
-        }
-        
-        print("playing \(url)")
+    func playAudio(_ url: URL) {
         
         do {
-            self.player = try AVAudioPlayer(contentsOf: url!)
+            self.player = try AVAudioPlayer(contentsOf: url)
             player.delegate = self
             player.prepareToPlay()
             player.volume = 1.0

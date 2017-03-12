@@ -22,9 +22,7 @@ class DrawerView: UIView, AVAudioPlayerDelegate, UITableViewDelegate, UITableVie
     var recordings = [Recording]()
     
     var isOpen = false
-    
-    var statusBarView: UIView!
-    
+        
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -44,22 +42,22 @@ class DrawerView: UIView, AVAudioPlayerDelegate, UITableViewDelegate, UITableVie
         self.layer.shadowOpacity = 0.5
         self.layer.shadowRadius = 10
         
-        self.statusBarView = UIView(frame: CGRect(x: 0, y: 0, width: self.bounds.width, height: UIApplication.shared.statusBarFrame.height))
-        self.statusBarView.backgroundColor = UIColor(colorLiteralRed: 255/255, green: 95/255, blue: 95/255, alpha: 1)
-        self.addSubview(statusBarView)
-        
         headerView = UIImageView(frame: CGRect(x: 0, y: 0, width: self.bounds.width, height: self.bounds.height*0.25))
+        headerView.image = UIImage(imageLiteralResourceName: "pulloutDesign")
         self.addSubview(headerView)
         
-        headerLabel = UILabel(frame: CGRect(x: self.bounds.width*0.05, y: self.bounds.height*0.05, width: self.bounds.width*0.9, height: self.bounds.height*0.15))
+        headerLabel = UILabel(frame: CGRect(x: self.bounds.width*0.1, y: 0, width: self.bounds.width*0.9, height: self.bounds.height*0.15))
         headerLabel.text = "Your Bites"
         headerLabel.textColor = UIColor(colorLiteralRed: 255/255, green: 95/255, blue: 95/255, alpha: 1)
-        headerLabel.font = UIFont(name: "Chalet-NewYorkNineteenEighty", size: 24)
+        headerLabel.font = UIFont(name: "Chalet-NewYorkNineteenEighty", size: 26)
         self.addSubview(headerLabel)
         
         tableView = UITableView(frame: CGRect(x: self.bounds.width*0.05, y: headerView.bounds.height, width: self.bounds.width*0.9, height: self.bounds.height-headerView.bounds.height), style: .plain)
+        tableView.allowsSelection = true
+        tableView.isUserInteractionEnabled = true
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.separatorStyle = .none
         tableView.register(RecordingViewCell.self, forCellReuseIdentifier: "Cell")
         self.addSubview(tableView)
         
@@ -101,6 +99,14 @@ class DrawerView: UIView, AVAudioPlayerDelegate, UITableViewDelegate, UITableVie
         cell.recording = self.recordings[indexPath.row]
         
         return cell
+        
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let url = recordings[indexPath.row].url
+        
+        SoundController.shared.playAudio(url!)
         
     }
     
