@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import AVFoundation
 
-class DrawerView: UIView, AVAudioPlayerDelegate, UITableViewDelegate, UITableViewDataSource {
+class DrawerView: UIView, AVAudioPlayerDelegate {
     
     var player: AVAudioPlayer!
     
@@ -22,6 +22,8 @@ class DrawerView: UIView, AVAudioPlayerDelegate, UITableViewDelegate, UITableVie
     var recordings = [Recording]()
     
     var isOpen = false
+    
+    var views = [UIView]()
         
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -42,7 +44,7 @@ class DrawerView: UIView, AVAudioPlayerDelegate, UITableViewDelegate, UITableVie
         self.layer.shadowOpacity = 0.5
         self.layer.shadowRadius = 10
         
-        headerView = UIImageView(frame: CGRect(x: 0, y: 0, width: self.bounds.width, height: self.bounds.height*0.25))
+        headerView = UIImageView(frame: CGRect(x: 0, y: 0, width: self.bounds.width, height: self.bounds.height*0.225))
         headerView.image = UIImage(imageLiteralResourceName: "pulloutDesign")
         self.addSubview(headerView)
         
@@ -51,15 +53,6 @@ class DrawerView: UIView, AVAudioPlayerDelegate, UITableViewDelegate, UITableVie
         headerLabel.textColor = UIColor(colorLiteralRed: 255/255, green: 95/255, blue: 95/255, alpha: 1)
         headerLabel.font = UIFont(name: "Chalet-NewYorkNineteenEighty", size: 26)
         self.addSubview(headerLabel)
-        
-        tableView = UITableView(frame: CGRect(x: self.bounds.width*0.05, y: headerView.bounds.height, width: self.bounds.width*0.9, height: self.bounds.height-headerView.bounds.height), style: .plain)
-        tableView.allowsSelection = true
-        tableView.isUserInteractionEnabled = true
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.separatorStyle = .none
-        tableView.register(RecordingViewCell.self, forCellReuseIdentifier: "Cell")
-        self.addSubview(tableView)
         
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         let recordingsDirectory = documentsDirectory.appendingPathComponent(DirectoryNames.finishedFiles)
@@ -82,37 +75,28 @@ class DrawerView: UIView, AVAudioPlayerDelegate, UITableViewDelegate, UITableVie
             recordings.append(recording)
         }
         
-    }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return recordings.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        var yHeight = headerView.bounds.height
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! RecordingViewCell
+        var i = 0
         
-        cell.recording = self.recordings[indexPath.row]
-        
-        return cell
+        for recording in recordings {
+            let view = RecordingViewCell(frame: CGRect(x: self.bounds.width*0.05, y: yHeight, width: self.bounds.width*0.9, height: self.bounds.height*0.2), recording)
+            view.isUserInteractionEnabled = true
+            views.append(view)
+            self.addSubview(view)
+            
+            i += 1
+            
+            yHeight += view.bounds.height
+        }
         
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func viewPressed(sender: UITapGestureRecognizer) {
         
-        let url = recordings[indexPath.row].url
+        let recording = recordings[Int(sender.accessibilityHint!)!]
         
-        SoundController.shared.playAudio(url!)
-        
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        
-        return self.bounds.height*0.2
+        SoundController.shared.playAudio(recording.url)
         
     }
     

@@ -29,6 +29,8 @@ class ViewController: UIViewController {
         
         self.view.window?.backgroundColor = .white
         
+        
+        
         finishButton.alpha = 0
         cancelButton.alpha = 0
         
@@ -51,8 +53,16 @@ class ViewController: UIViewController {
         
         cancelButton.addTarget(self, action: #selector(cancelButtonPressed(sender:)), for: .touchUpInside)
         
-        drawerView = DrawerView(frame: CGRect(x: -view.bounds.width*0.8, y: UIApplication.shared.statusBarFrame.height, width: view.bounds.width*0.8, height: view.bounds.height-UIApplication.shared.statusBarFrame.height))
-        view.addSubview(drawerView)
+        drawerView = DrawerView(frame: CGRect(x: 0, y: UIApplication.shared.statusBarFrame.height, width: view.bounds.width*0.8, height: view.bounds.height-UIApplication.shared.statusBarFrame.height))
+        drawerView.isUserInteractionEnabled = true
+        //view.addSubview(drawerView)
+        
+        for view in drawerView.views {
+            view.isUserInteractionEnabled = true
+            let tap = UITapGestureRecognizer(target: self, action: #selector(viewTapped(sender:)))
+            view.addGestureRecognizer(tap)
+            
+        }
         
         soundController = SoundController.shared
         soundController.startRecording()
@@ -67,20 +77,35 @@ class ViewController: UIViewController {
     func menuButtonPressed(sender: UIButton) {
         
         if !drawerView.isOpen {
+            
+            drawerView.center.x = -view.bounds.width*0.4
+            view.addSubview(drawerView)
         
             UIView.animate(withDuration: 0.5) {
             
-                self.view.center.x = self.view.bounds.width*1.3
+                //self.view.center.x = self.view.bounds.width*1.3
+                self.drawerView.center.x = self.view.bounds.width*0.4
             
             }
             
         } else {
             
-            UIView.animate(withDuration: 0.5) {
+            UIView.animate(withDuration: 0.5, animations: {
                 
-                self.view.center.x = self.view.bounds.width*0.5
+                //self.view.center.x = self.view.bounds.width*0.5
+                self.drawerView.center.x = -self.view.bounds.width*0.4
                 
-            }
+            }, completion: {
+                finished in
+                
+                if finished {
+                
+                    self.drawerView.center.x = self.view.bounds.width*0.4
+                    self.drawerView.removeFromSuperview()
+                    
+                }
+                
+            })
             
         }
         
@@ -138,6 +163,13 @@ class ViewController: UIViewController {
         alertController.addAction(cancelAction)
         
         self.present(alertController, animated: true, completion: nil)
+        
+    }
+    
+    func viewTapped(sender: UITapGestureRecognizer) {
+        
+        let v = sender.view as! RecordingViewCell
+        soundController.playAudio(v.recording.url)
         
     }
 
