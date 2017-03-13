@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import AVFoundation
 
-class DrawerView: UIView, AVAudioPlayerDelegate {
+class DrawerView: UIView, UITableViewDelegate, UITableViewDataSource {
     
     var player: AVAudioPlayer!
     
@@ -54,6 +54,12 @@ class DrawerView: UIView, AVAudioPlayerDelegate {
         headerLabel.font = UIFont(name: "Chalet-NewYorkNineteenEighty", size: 26)
         self.addSubview(headerLabel)
         
+        tableView = UITableView(frame: CGRect(x: self.bounds.width*0.05, y: headerView.bounds.height, width: self.bounds.width*0.9, height: self.bounds.height-headerView.bounds.height))
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(RecordingTableViewCell.self, forCellReuseIdentifier: "Cell")
+        self.addSubview(tableView)
+        
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         let recordingsDirectory = documentsDirectory.appendingPathComponent(DirectoryNames.finishedFiles)
         
@@ -75,7 +81,9 @@ class DrawerView: UIView, AVAudioPlayerDelegate {
             recordings.append(recording)
         }
         
-        var yHeight = headerView.bounds.height
+        tableView.reloadData()
+        
+        /*var yHeight = headerView.bounds.height
         
         var i = 0
         
@@ -88,7 +96,7 @@ class DrawerView: UIView, AVAudioPlayerDelegate {
             i += 1
             
             yHeight += view.bounds.height
-        }
+        }*/
         
     }
     
@@ -97,6 +105,32 @@ class DrawerView: UIView, AVAudioPlayerDelegate {
         let recording = recordings[Int(sender.accessibilityHint!)!]
         
         SoundController.shared.playAudio(recording.url)
+        
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return recordings.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! RecordingTableViewCell
+        
+        let recording = recordings[indexPath.row]
+        
+        cell.recording = recording
+        
+        return cell
+        
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        return self.bounds.height*0.2
         
     }
     

@@ -29,7 +29,7 @@ class ViewController: UIViewController {
         
         self.view.window?.backgroundColor = .white
         
-        
+        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(viewTapped(tap:))))
         
         finishButton.alpha = 0
         cancelButton.alpha = 0
@@ -54,24 +54,11 @@ class ViewController: UIViewController {
         cancelButton.addTarget(self, action: #selector(cancelButtonPressed(sender:)), for: .touchUpInside)
         
         drawerView = DrawerView(frame: CGRect(x: 0, y: UIApplication.shared.statusBarFrame.height, width: view.bounds.width*0.8, height: view.bounds.height-UIApplication.shared.statusBarFrame.height))
-        drawerView.isUserInteractionEnabled = true
         //view.addSubview(drawerView)
-        
-        for view in drawerView.views {
-            view.isUserInteractionEnabled = true
-            let tap = UITapGestureRecognizer(target: self, action: #selector(viewTapped(sender:)))
-            view.addGestureRecognizer(tap)
-            
-        }
         
         soundController = SoundController.shared
         soundController.startRecording()
     
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func menuButtonPressed(sender: UIButton) {
@@ -166,10 +153,11 @@ class ViewController: UIViewController {
         
     }
     
-    func viewTapped(sender: UITapGestureRecognizer) {
+    func viewTapped(tap: UITapGestureRecognizer) {
         
-        let v = sender.view as! RecordingViewCell
-        soundController.playAudio(v.recording.url)
+        if drawerView.isOpen {
+            menuButtonPressed(sender: UIButton())
+        }
         
     }
 

@@ -285,7 +285,7 @@ class SoundController: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDelegate 
                 }
             })
         } else {
-            print("requestRecordPermission unrecognized")
+            print("request RecordPermission unrecognized")
         }
         
     }
