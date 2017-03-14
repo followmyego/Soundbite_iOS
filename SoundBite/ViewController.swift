@@ -131,13 +131,33 @@ class ViewController: UIViewController {
         let saveAction = UIAlertAction(title: "Save", style: .default) {
             alert in
             
+            self.finishButton.alpha = 0
+            self.cancelButton.alpha = 0
+            self.instructionLabel.alpha = 1
+            
             if let textField = self.alertController.textFields?.first {
             
                 //overwrites any file with same name - fix in future
                 let filename = textField.text!
                 let encodedFilename = filename.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-                SoundController.shared.finishedSoundbiting(encodedFilename!)
-                SoundController.shared.restartRecording()
+                SoundController.shared.finishedSoundbiting(encodedFilename!) {
+                    success in
+                    
+                    if success {
+                        print("Success")
+                        DispatchQueue.main.async {
+                            SoundController.shared.startRecording()
+                        }
+                    } else {
+                        print("File already exists")
+                        DispatchQueue.main.async {
+                            self.present(self.alertController, animated: true)
+                            textField.text = ""
+                            textField.placeholder = "Error: Choose a different name"
+                        }
+                    }
+                    
+                }
                 
             }
             

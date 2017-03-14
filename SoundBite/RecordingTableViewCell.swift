@@ -8,8 +8,10 @@
 
 import Foundation
 import UIKit
+import AVFoundation
 
-@IBDesignable class RecordingTableViewCell: UITableViewCell {
+@IBDesignable class RecordingTableViewCell: UITableViewCell, AVAudioPlayerDelegate {
+    
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var recordingImageview: UIImageView!
     
@@ -21,6 +23,8 @@ import UIKit
     @IBOutlet weak var durationLabel: UILabel!
     
     @IBOutlet weak var view: UIView!
+    
+    var player: AVAudioPlayer!
     
     var recording: Recording! {
         didSet {
@@ -86,14 +90,56 @@ import UIKit
     
     @IBAction func playButtonPressed(_ sender: Any) {
         
-        SoundController.shared.playAudio(recording.url)
-        playButton.setImage(UIImage(named: "pauseIcon"), for: .normal)
-        
+        //SoundController.shared.playAudio(recording.url)
+        if player != nil {
+            if player.isPlaying {
+                player.pause()
+                playButton.setImage(UIImage(named: "playIcon"), for: .normal)
+            } else {
+                player.play()
+                playButton.setImage(UIImage(named: "pauseIcon"), for: .normal)
+            }
+        } else {
+            setupPlayer()
+        }
     }
     
     @IBAction func editButtonPressed(_ sender: Any) {
         
         
         
+    }
+    
+    func setupPlayer() {
+        
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSessionPortOverride.speaker)
+        } catch let error as NSError {
+            print("could not set session category")
+            print(error.localizedDescription)
+        }
+        do {
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch let error as NSError {
+            print("could not make session active")
+            print(error.localizedDescription)
+        }
+        
+        do {
+            try player = AVAudioPlayer(contentsOf: recording.url)
+            player.delegate = self
+            player.volume = 1.0
+            player.prepareToPlay()
+            player.play()
+            playButton.setImage(UIImage(named: "pauseIcon"), for: .normal)
+        } catch let error {
+            print(error.localizedDescription)
+        }
+        
+    }
+    
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        playButton.setImage(UIImage(named: "playIcon"), for: .normal)
     }
 }

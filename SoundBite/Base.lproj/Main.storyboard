@@ -6,8 +6,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
-        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -28,77 +26,46 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mainScreenDesign" translatesAutoresizingMaskIntoConstraints="NO" id="fZM-tT-21t">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="mainScreenDesign" translatesAutoresizingMaskIntoConstraints="NO" id="fZM-tT-21t">
                                 <rect key="frame" x="0.0" y="20" width="375" height="150"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lo8-Lb-WMI">
+                            <button opaque="NO" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lo8-Lb-WMI">
                                 <rect key="frame" x="135" y="485" width="110" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="Fsp-sS-WWE"/>
-                                    <constraint firstAttribute="width" constant="110" id="cno-bm-wf2"/>
-                                </constraints>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
                                 <state key="normal" title="Finish" image="doneButton"/>
                             </button>
-                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mPj-uf-xsu">
+                            <button opaque="NO" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mPj-uf-xsu">
                                 <rect key="frame" x="165" y="559" width="50" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="UrC-hy-SDd"/>
-                                    <constraint firstAttribute="width" constant="50" id="Wxi-vI-EvT"/>
-                                </constraints>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
                                 <state key="normal" title="Button" image="xIcon2"/>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ready" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="st4-4n-9iP">
-                                <rect key="frame" x="106" y="28" width="167" height="62"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="62" id="I25-iF-fzb"/>
-                                </constraints>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Ready" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="st4-4n-9iP">
+                                <rect key="frame" x="105" y="28" width="168" height="62"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="Chalet-NewYorkNineteenEighty" family="Chalet" pointSize="24"/>
                                 <color key="textColor" red="1" green="0.3669811487197876" blue="0.35579842329025269" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YWE-zK-kMu">
-                                <rect key="frame" x="99" y="243" width="181" height="180"/>
+                            <button opaque="NO" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YWE-zK-kMu">
+                                <rect key="frame" x="99" y="243" width="180" height="180"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <state key="normal" backgroundImage="button"/>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap the button to save the last 10 secs of recording." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="9ns-dH-ZTm">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Tap the button to save the last 10 secs of recording." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="9ns-dH-ZTm">
                                 <rect key="frame" x="45" y="512" width="284" height="72"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <fontDescription key="fontDescription" name="Chalet-NewYorkNineteenEighty" family="Chalet" pointSize="20"/>
                                 <color key="textColor" red="0.79599106311798096" green="0.79612869024276733" blue="0.79598242044448853" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JEy-cO-hwk">
-                                <rect key="frame" x="16" y="28" width="72" height="70"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="70" id="IiT-9v-YzG"/>
-                                </constraints>
+                            <button opaque="NO" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JEy-cO-hwk">
+                                <rect key="frame" x="16" y="28" width="71" height="70"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="menuIcon"/>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="mPj-uf-xsu" secondAttribute="bottom" constant="58" id="0yq-D0-J9J"/>
-                            <constraint firstItem="fZM-tT-21t" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="2Ko-Kx-rmL"/>
-                            <constraint firstItem="JEy-cO-hwk" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" symbolic="YES" id="5sM-g7-pyF"/>
-                            <constraint firstItem="Lo8-Lb-WMI" firstAttribute="centerX" secondItem="mPj-uf-xsu" secondAttribute="centerX" id="HYb-iW-Xqj"/>
-                            <constraint firstItem="mPj-uf-xsu" firstAttribute="top" secondItem="Lo8-Lb-WMI" secondAttribute="bottom" constant="24" id="Jct-yd-CGb"/>
-                            <constraint firstItem="fZM-tT-21t" firstAttribute="centerX" secondItem="9ns-dH-ZTm" secondAttribute="centerX" id="PRo-tr-un1"/>
-                            <constraint firstItem="Lo8-Lb-WMI" firstAttribute="top" secondItem="YWE-zK-kMu" secondAttribute="bottom" constant="62" id="QoH-AJ-9Sw"/>
-                            <constraint firstItem="st4-4n-9iP" firstAttribute="centerX" secondItem="YWE-zK-kMu" secondAttribute="centerX" id="RHm-px-PD0"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="9ns-dH-ZTm" secondAttribute="bottom" constant="83" id="T17-HP-Ull"/>
-                            <constraint firstItem="YWE-zK-kMu" firstAttribute="top" secondItem="fZM-tT-21t" secondAttribute="bottom" constant="73" id="TCE-4c-zb3"/>
-                            <constraint firstItem="9ns-dH-ZTm" firstAttribute="firstBaseline" secondItem="Lo8-Lb-WMI" secondAttribute="firstBaseline" id="dKa-zl-Cph"/>
-                            <constraint firstItem="9ns-dH-ZTm" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="29" id="hHv-X5-sv8"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="st4-4n-9iP" secondAttribute="trailing" constant="86" id="iDj-Tl-RpP"/>
-                            <constraint firstItem="JEy-cO-hwk" firstAttribute="top" secondItem="st4-4n-9iP" secondAttribute="top" id="iER-lX-C41"/>
-                            <constraint firstItem="YWE-zK-kMu" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="lme-hH-Yit"/>
-                            <constraint firstItem="JEy-cO-hwk" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="nSz-fG-l7c"/>
-                            <constraint firstItem="YWE-zK-kMu" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="83" id="oAV-2Q-ZaK"/>
-                            <constraint firstItem="YWE-zK-kMu" firstAttribute="centerX" secondItem="Lo8-Lb-WMI" secondAttribute="centerX" id="p5t-sN-Xwn"/>
-                            <constraint firstItem="st4-4n-9iP" firstAttribute="leading" secondItem="JEy-cO-hwk" secondAttribute="trailing" constant="18" id="uhr-1L-ipO"/>
-                            <constraint firstAttribute="trailing" secondItem="fZM-tT-21t" secondAttribute="trailing" id="uzJ-Aw-gex"/>
-                            <constraint firstItem="fZM-tT-21t" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="xLK-zO-nbA"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="YWE-zK-kMu" secondAttribute="trailing" constant="79" id="yN8-m5-ac6"/>
-                        </constraints>
                     </view>
                     <connections>
                         <outlet property="cancelButton" destination="mPj-uf-xsu" id="Qy5-es-I65"/>

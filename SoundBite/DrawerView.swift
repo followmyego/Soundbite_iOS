@@ -39,7 +39,7 @@ class DrawerView: UIView, UITableViewDelegate, UITableViewDataSource {
     func setup() {
         
         self.backgroundColor = .white
-        
+                
         self.layer.shadowOffset = CGSize(width: 5, height: 5)
         self.layer.shadowOpacity = 0.5
         self.layer.shadowRadius = 10

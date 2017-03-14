@@ -68,6 +68,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		681D57051E78724500CB6011 /* SoundBite.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SoundBite.entitlements; sourceTree = "<group>"; };
 		687D05F31E74DB4C005164B5 /* devkit */ = {isa = PBXFileReference; lastKnownFileType = folder; path = devkit; sourceTree = "<group>"; };
 		688B3C061E750068005E75E1 /* DrawerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawerView.swift; sourceTree = "<group>"; };
 		688B3C081E750215005E75E1 /* RecordingViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordingViewCell.swift; sourceTree = "<group>"; };
@@ -170,6 +171,7 @@
 		688DADD81E7468C900A3A7AD /* SoundBite */ = {
 			isa = PBXGroup;
 			children = (
+				681D57051E78724500CB6011 /* SoundBite.entitlements */,
 				688DADD91E7468C900A3A7AD /* AppDelegate.swift */,
 				688DAE1D1E7482EF00A3A7AD /* SoundController.swift */,
 				688DADDB1E7468C900A3A7AD /* ViewController.swift */,
@@ -314,9 +316,14 @@
 				TargetAttributes = {
 					688DADD51E7468C900A3A7AD = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = BL9758P7UG;
+						DevelopmentTeam = 7D555FCVE5;
 						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 					688DADE91E7468C900A3A7AD = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -334,7 +341,7 @@
 					};
 					688DAE0A1E74697D00A3A7AD = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = BL9758P7UG;
+						DevelopmentTeam = 7D555FCVE5;
 						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 					};
@@ -555,9 +562,11 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 7D555FCVE5;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -604,9 +613,11 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 7D555FCVE5;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -631,10 +642,12 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = BL9758P7UG;
+				CODE_SIGN_ENTITLEMENTS = SoundBite/SoundBite.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 7D555FCVE5;
 				INFOPLIST_FILE = SoundBite/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = LoganGeefs.SoundBite;
+				PRODUCT_BUNDLE_IDENTIFIER = com.soundbite.soundbite;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -646,10 +659,12 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = BL9758P7UG;
+				CODE_SIGN_ENTITLEMENTS = SoundBite/SoundBite.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 7D555FCVE5;
 				INFOPLIST_FILE = SoundBite/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = LoganGeefs.SoundBite;
+				PRODUCT_BUNDLE_IDENTIFIER = com.soundbite.soundbite;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -716,10 +731,11 @@
 		688DAE1A1E74697D00A3A7AD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				DEVELOPMENT_TEAM = BL9758P7UG;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 7D555FCVE5;
 				INFOPLIST_FILE = SoundBiteExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = LoganGeefs.SoundBite.SoundBiteExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.soundbite.soundbite.extension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 3.0;
@@ -729,10 +745,11 @@
 		688DAE1B1E74697D00A3A7AD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				DEVELOPMENT_TEAM = BL9758P7UG;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 7D555FCVE5;
 				INFOPLIST_FILE = SoundBiteExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = LoganGeefs.SoundBite.SoundBiteExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.soundbite.soundbite.extension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 3.0;

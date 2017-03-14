@@ -9,8 +9,12 @@
 import Foundation
 import AVFoundation
 
-protocol SoundControllerDelegate {
+protocol SoundControllerPlayerDelegate {
     func playerFinishedPlaying(audioPlayer: AVAudioPlayer)
+    func playerPaused(audioPlayer: AVAudioPlayer)
+    func playerResumed(audioPlayer: AVAudioPlayer)
+}
+protocol SoundControllerRecorderDelegate {
     
 }
 
@@ -25,6 +29,9 @@ struct DirectoryNames {
 class SoundController: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDelegate {
     
     static let shared = SoundController()
+    
+    var playerDelegate: SoundControllerPlayerDelegate?
+    var recorderDelegate: SoundControllerRecorderDelegate?
         
     let session = AVAudioSession.sharedInstance()
     
@@ -37,6 +44,12 @@ class SoundController: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDelegate 
     
     override init() {
         super.init()
+        
+        setup()
+        
+    }
+    
+    func setup() {
         
         self.createDirectory(DirectoryNames.rawfiles)
         self.createDirectory(DirectoryNames.soundbits)
@@ -55,6 +68,20 @@ class SoundController: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDelegate 
         
     }
     
+    func renameFile() {
+        
+        do {
+            let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+            let documentDirectory = URL(fileURLWithPath: path)
+            let originPath = documentDirectory.appendingPathComponent("currentname.pdf")
+            let destinationPath = documentDirectory.appendingPathComponent("newname.pdf")
+            try FileManager.default.moveItem(at: originPath, to: destinationPath)
+        } catch {
+            print(error)
+        }
+        
+    }
+    
     func saveSoundbite() {
         
         let markerDouble = Date().timeIntervalSince(startTime)
@@ -67,20 +94,28 @@ class SoundController: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDelegate 
         
     }
     
-    func finishedSoundbiting(_ filename: String) {
+    func finishedSoundbiting(_ filename: String, completion: (_ success: Bool) -> Void) {
         
         self.stopRecording()
         
         let audioURL = self.recorder.url
         
-        self.recorder = nil
-        
         let asset = AVAsset.init(url: audioURL)
         
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let directoryPath = URL(fileURLWithPath: documentsDirectory.appendingPathComponent(DirectoryNames.soundbits).path)
-        deleteAllRecordings(directoryPath)
-        exportAsset(asset, directoryPath, filename)
+        let soundbitsPath = URL(fileURLWithPath: documentsDirectory.appendingPathComponent(DirectoryNames.soundbits).path)
+        let finishedFilePath = URL(fileURLWithPath: documentsDirectory.appendingPathComponent(DirectoryNames.finishedFiles).path)
+        let newFilePath = finishedFilePath.appendingPathComponent("\(filename).m4a")
+        if FileManager.default.fileExists(atPath: newFilePath.path) {
+            completion(false)
+            return
+        }
+        deleteAllRecordings(soundbitsPath)
+        exportAsset(asset, soundbitsPath, filename)
+        
+        self.recorder = nil
+        
+        completion(true)
         
     }
     
@@ -137,7 +172,7 @@ class SoundController: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDelegate 
                 switch exporter.status {
                 case .failed:
                     print("Export failed")
-                    print(exporter.error)
+                    print(exporter.error?.localizedDescription ?? "Unknown Error")
                     break
                 case .cancelled:
                     print("Export cancelled")
@@ -283,6 +318,13 @@ class SoundController: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDelegate 
     
     func startRecording() {
         
+        self.markers.removeAll()
+        startTime = Date()
+        
+        if recorder != nil {
+            recorder.deleteRecording()
+        }
+        
         if player != nil && player.isPlaying {
             player.stop()
         }
@@ -334,6 +376,7 @@ class SoundController: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDelegate 
         
         do {
             try session.setCategory(AVAudioSessionCategoryPlayAndRecord)
+            try session.overrideOutputAudioPort(AVAudioSessionPortOverride.speaker)
         } catch let error as NSError {
             print("could not set session category")
             print(error.localizedDescription)
@@ -349,8 +392,12 @@ class SoundController: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDelegate 
     
     func stopRecording() {
         
-        self.recorder.stop()
-        print(self.recorder.url)
+        if self.recorder != nil && self.recorder.isRecording {
+        
+            self.recorder.stop()
+            print(self.recorder.url)
+            
+        }
         
     }
     
@@ -401,7 +448,13 @@ class SoundController: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDelegate 
         
         if self.player != nil {
             if !self.player.isPlaying {
+                if player.delegate == nil {
+                    player.delegate = self
+                }
                 self.player.play()
+                if let playerDelegate = playerDelegate {
+                    playerDelegate.playerResumed(audioPlayer: player)
+                }
             }
         }
         
@@ -412,9 +465,18 @@ class SoundController: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDelegate 
         if self.player != nil {
             if self.player.isPlaying {
                 self.player.pause()
+                if let playerDelegate = playerDelegate {
+                    playerDelegate.playerPaused(audioPlayer: player)
+                }
             }
         }
         
+    }
+    
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        if let delegate = playerDelegate {
+            delegate.playerFinishedPlaying(audioPlayer: player)
+        }
     }
     
     func deleteRecording(_ recording: Recording) {
