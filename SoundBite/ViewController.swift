@@ -16,13 +16,11 @@ class ViewController: UIViewController {
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var instructionLabel: UILabel!
     
-    var soundController: SoundController!
-    
-    var startTimer: Timer!
-    
     var drawerView: DrawerView!
     
     var statusBarView: UIView!
+    
+    let alertController = UIAlertController(title: "Save", message: "Title of clip", preferredStyle: .alert)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,23 +39,21 @@ class ViewController: UIViewController {
         
         readyButton.font = UIFont(name: "Chalet-NewYorkNineteenEighty", size: 24)
         instructionLabel.font = UIFont(name: "Chalet-NewYorkNineteenEighty", size: 20)
-        
-        startTimer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(activateSoundbiteButton(timer:)), userInfo: nil, repeats: false)
 
         menuButton.addTarget(self, action: #selector(menuButtonPressed(sender:)), for: .touchUpInside)
         
-        recordButton.isEnabled = false
         recordButton.addTarget(self, action: #selector(recordButtonPressed(sender:)), for: .touchUpInside)
         
         finishButton.addTarget(self, action: #selector(finishButtonPressed(sender:)), for: .touchUpInside)
         
         cancelButton.addTarget(self, action: #selector(cancelButtonPressed(sender:)), for: .touchUpInside)
         
+        //drawer view is added/removed each time it's animated
         drawerView = DrawerView(frame: CGRect(x: 0, y: UIApplication.shared.statusBarFrame.height, width: view.bounds.width*0.8, height: view.bounds.height-UIApplication.shared.statusBarFrame.height))
-        //view.addSubview(drawerView)
         
-        soundController = SoundController.shared
-        soundController.startRecording()
+        SoundController.shared.startRecording()
+        
+        setupAlertController()
     
     }
     
@@ -65,44 +61,57 @@ class ViewController: UIViewController {
         
         if !drawerView.isOpen {
             
-            drawerView.center.x = -view.bounds.width*0.4
-            view.addSubview(drawerView)
-        
-            UIView.animate(withDuration: 0.5) {
-            
-                //self.view.center.x = self.view.bounds.width*1.3
-                self.drawerView.center.x = self.view.bounds.width*0.4
-            
-            }
+            drawerView.updateRecordings()
+            openDrawer()
             
         } else {
             
-            UIView.animate(withDuration: 0.5, animations: {
-                
-                //self.view.center.x = self.view.bounds.width*0.5
-                self.drawerView.center.x = -self.view.bounds.width*0.4
-                
-            }, completion: {
-                finished in
-                
-                if finished {
-                
-                    self.drawerView.center.x = self.view.bounds.width*0.4
-                    self.drawerView.removeFromSuperview()
-                    
-                }
-                
-            })
+            closeDrawer()
             
         }
         
-        drawerView.isOpen = !drawerView.isOpen
+    }
+    
+    func openDrawer() {
+        
+        drawerView.center.x = -view.bounds.width*0.4
+        view.addSubview(drawerView)
+        
+        UIView.animate(withDuration: 0.5) {
+            
+            self.drawerView.center.x = self.view.bounds.width*0.4
+            
+        }
+        
+        drawerView.isOpen = true
+        
+    }
+    
+    func closeDrawer() {
+        
+        UIView.animate(withDuration: 0.5, animations: {
+            
+            self.drawerView.center.x = -self.view.bounds.width*0.4
+            
+        }, completion: {
+            finished in
+            
+            if finished {
+                
+                self.drawerView.center.x = self.view.bounds.width*0.4
+                self.drawerView.removeFromSuperview()
+                
+            }
+            
+        })
+        
+        drawerView.isOpen = false
         
     }
 
     func recordButtonPressed(sender: UIButton) {
         
-        soundController.saveSoundbite()
+        SoundController.shared.saveSoundbite()
         
         UIView.animate(withDuration: 0.5) {
         
@@ -115,30 +124,57 @@ class ViewController: UIViewController {
         
     }
     
-    func activateSoundbiteButton(timer: Timer) {
+    func setupAlertController() {
         
-        recordButton.isEnabled = true
-        startTimer.invalidate()
-        startTimer = nil
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        let saveAction = UIAlertAction(title: "Save", style: .default) {
+            alert in
+            
+            if let textField = self.alertController.textFields?.first {
+            
+                //overwrites any file with same name - fix in future
+                let filename = textField.text!
+                let encodedFilename = filename.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+                SoundController.shared.finishedSoundbiting(encodedFilename!)
+                SoundController.shared.restartRecording()
+                
+            }
+            
+        }
+        
+        alertController.addTextField {
+            textField in
+            
+            textField.placeholder = "My Soundbite"
+            //textField.addTarget(self, action: #selector(self.textFieldValueChanged(textField:)), for: .valueChanged)
+            
+        }
+        
+        alertController.addAction(cancelAction)
+        alertController.addAction(saveAction)
         
     }
     
     func finishButtonPressed(sender: UIButton) {
         
-        soundController.finishedSoundbite()
+        self.present(alertController, animated: true, completion: nil)
         
     }
     
     func cancelButtonPressed(sender: UIButton) {
         
-        let alertController = UIAlertController(title: nil, message: "Are you sure?", preferredStyle: .alert)
+        let alertController = UIAlertController(title: nil, message: "Are you sure you want to delete your soundbite?", preferredStyle: .alert)
         
         let deleteAction = UIAlertAction(title: "Delete", style: .destructive) {
             alert in
             
             DispatchQueue.main.async {
             
-                self.soundController.restartRecording()
+                SoundController.shared.restartRecording()
+                self.instructionLabel.alpha = 1
+                self.finishButton.alpha = 0
+                self.cancelButton.alpha = 0
                 
             }
             
@@ -160,6 +196,18 @@ class ViewController: UIViewController {
         }
         
     }
+    
+    /*func textFieldValueChanged(textField: UITextField) {
+        
+        if textField.text!.characters.count > 0 {
+            //save action should be index 1 of alertController actions
+            //enable save button
+            alertController.actions[1].isEnabled = true
+        } else {
+            alertController.actions[1].isEnabled = false
+        }
+        
+    }*/
 
 }
 

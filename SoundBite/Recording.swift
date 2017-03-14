@@ -18,7 +18,7 @@ class Recording {
     
     init(_ name: String, _ duration: Double, _ creationDate: Date, _ url: URL) {
         
-        self.name = name
+        self.name = name.replacingOccurrences(of: "%20", with: " ")
         self.duration = duration
         self.creationDate = creationDate
         self.url = url

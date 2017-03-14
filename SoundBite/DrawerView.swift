@@ -44,7 +44,7 @@ class DrawerView: UIView, UITableViewDelegate, UITableViewDataSource {
         self.layer.shadowOpacity = 0.5
         self.layer.shadowRadius = 10
         
-        headerView = UIImageView(frame: CGRect(x: 0, y: 0, width: self.bounds.width, height: self.bounds.height*0.225))
+        headerView = UIImageView(frame: CGRect(x: 0, y: 0, width: self.bounds.width, height: self.bounds.height*0.22))
         headerView.image = UIImage(imageLiteralResourceName: "pulloutDesign")
         self.addSubview(headerView)
         
@@ -57,8 +57,30 @@ class DrawerView: UIView, UITableViewDelegate, UITableViewDataSource {
         tableView = UITableView(frame: CGRect(x: self.bounds.width*0.05, y: headerView.bounds.height, width: self.bounds.width*0.9, height: self.bounds.height-headerView.bounds.height))
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.separatorStyle = .none
         tableView.register(RecordingTableViewCell.self, forCellReuseIdentifier: "Cell")
         self.addSubview(tableView)
+        
+        updateRecordings()
+        
+        /*var yHeight = headerView.bounds.height
+        
+        var i = 0
+        
+        for recording in recordings {
+            let view = RecordingViewCell(frame: CGRect(x: self.bounds.width*0.05, y: yHeight, width: self.bounds.width*0.9, height: self.bounds.height*0.2), recording)
+            view.isUserInteractionEnabled = true
+            views.append(view)
+            self.addSubview(view)
+            
+            i += 1
+            
+            yHeight += view.bounds.height
+        }*/
+        
+    }
+    
+    func updateRecordings() {
         
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         let recordingsDirectory = documentsDirectory.appendingPathComponent(DirectoryNames.finishedFiles)
@@ -82,29 +104,6 @@ class DrawerView: UIView, UITableViewDelegate, UITableViewDataSource {
         }
         
         tableView.reloadData()
-        
-        /*var yHeight = headerView.bounds.height
-        
-        var i = 0
-        
-        for recording in recordings {
-            let view = RecordingViewCell(frame: CGRect(x: self.bounds.width*0.05, y: yHeight, width: self.bounds.width*0.9, height: self.bounds.height*0.2), recording)
-            view.isUserInteractionEnabled = true
-            views.append(view)
-            self.addSubview(view)
-            
-            i += 1
-            
-            yHeight += view.bounds.height
-        }*/
-        
-    }
-    
-    func viewPressed(sender: UITapGestureRecognizer) {
-        
-        let recording = recordings[Int(sender.accessibilityHint!)!]
-        
-        SoundController.shared.playAudio(recording.url)
         
     }
     
@@ -131,6 +130,25 @@ class DrawerView: UIView, UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         return self.bounds.height*0.2
+        
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        
+        if editingStyle == .delete {
+            
+            let recording = recordings[indexPath.row]
+            
+            SoundController.shared.deleteRecording(recording)
+            
+            self.recordings.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            
+        }
         
     }
     

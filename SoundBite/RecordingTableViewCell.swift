@@ -35,6 +35,8 @@ import UIKit
         //self.addSubview(view)
         
         Bundle.main.loadNibNamed("RecordingTableViewCell", owner: self, options: nil)
+        view.frame = bounds
+        view.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleHeight]
         self.addSubview(self.view)
         
     }
@@ -85,6 +87,7 @@ import UIKit
     @IBAction func playButtonPressed(_ sender: Any) {
         
         SoundController.shared.playAudio(recording.url)
+        playButton.setImage(UIImage(named: "pauseIcon"), for: .normal)
         
     }
     
