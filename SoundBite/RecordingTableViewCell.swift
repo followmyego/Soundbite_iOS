@@ -24,6 +24,9 @@ import AVFoundation
     
     @IBOutlet weak var view: UIView!
     
+    var currentTimeTick: UIView!
+    var timer: Timer!
+    
     var player: AVAudioPlayer!
     
     var recording: Recording! {
@@ -42,6 +45,10 @@ import AVFoundation
         view.frame = bounds
         view.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleHeight]
         self.addSubview(self.view)
+        
+        currentTimeTick = UIView(frame: CGRect(x: -recordingImageview.bounds.width*0.01, y: 0, width: recordingImageview.bounds.width*0.01, height: recordingImageview.bounds.height))
+        currentTimeTick.backgroundColor = .white
+        recordingImageview.addSubview(currentTimeTick)
         
     }
     
@@ -97,10 +104,16 @@ import AVFoundation
         
     }
     
+    func moveTimeTick(timer: Timer) {
+        if player == nil { return }
+        let ratio = player.currentTime / player.duration
+        currentTimeTick.center.x = (recordingImageview.bounds.width-editButton.bounds.width)*CGFloat(ratio)
+    }
     
     @IBAction func playButtonPressed(_ sender: Any) {
         
-        //SoundController.shared.playAudio(recording.url)
+        timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(moveTimeTick(timer:)), userInfo: nil, repeats: true)
+        
         if player != nil {
             if player.isPlaying {
                 player.pause()
@@ -115,6 +128,8 @@ import AVFoundation
     }
     
     @IBAction func editButtonPressed(_ sender: Any) {
+        
+        //self.parentViewController?.show(EditSoundbitesViewController(), sender: self)
         
     }
     
@@ -148,6 +163,10 @@ import AVFoundation
     }
     
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        timer.invalidate()
+        timer = nil
         playButton.setImage(UIImage(named: "playIcon"), for: .normal)
+        self.player = nil
+        currentTimeTick.center.x = -recordingImageview.bounds.width*0.01
     }
 }

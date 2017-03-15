@@ -14,8 +14,9 @@ class DrawerView: UIView, UITableViewDelegate, UITableViewDataSource {
     
     var player: AVAudioPlayer!
     
-    var headerView: UIImageView!
+    var headerView: UIView!
     var headerLabel: UILabel!
+    var subHeaderLabel: UILabel!
     
     var tableView: UITableView!
     
@@ -44,20 +45,31 @@ class DrawerView: UIView, UITableViewDelegate, UITableViewDataSource {
         self.layer.shadowOpacity = 0.25
         self.layer.shadowRadius = 10*/
         
-        headerView = UIImageView(frame: CGRect(x: 0, y: 0, width: self.bounds.width, height: self.bounds.height*0.22))
-        headerView.image = UIImage(imageLiteralResourceName: "pulloutDesign")
+        headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.bounds.width, height: self.bounds.height*0.22))
+        headerView.backgroundColor = UIColor(colorLiteralRed: 255/255, green: 238/255, blue: 238/255, alpha: 1)
         self.addSubview(headerView)
         
-        headerLabel = UILabel(frame: CGRect(x: self.bounds.width*0.1, y: 0, width: self.bounds.width*0.9, height: self.bounds.height*0.15))
-        headerLabel.text = "Your Bites"
+        headerLabel = UILabel(frame: CGRect(x: self.bounds.width*0.15, y: self.bounds.height*0.075, width: self.bounds.width*0.8, height: self.bounds.height*0.15))
+        headerLabel.text = "My Bites"
         headerLabel.textColor = UIColor(colorLiteralRed: 255/255, green: 95/255, blue: 95/255, alpha: 1)
-        headerLabel.font = UIFont(name: "Chalet-NewYorkNineteenEighty", size: 26)
+        headerLabel.font = UIFont(name: "Chalet-NewYorkNineteenEighty", size: 28)
+        headerLabel.sizeToFit()
         self.addSubview(headerLabel)
         
-        tableView = UITableView(frame: CGRect(x: self.bounds.width*0.05, y: headerView.bounds.height, width: self.bounds.width*0.9, height: self.bounds.height-headerView.bounds.height))
+        subHeaderLabel = UILabel(frame: CGRect(x: self.bounds.width*0.15, y: headerLabel.center.y + headerLabel.bounds.height*0.66, width: self.bounds.width*0.8, height: self.bounds.height*0.1))
+        subHeaderLabel.text = "0 out of 5"
+        subHeaderLabel.textColor = UIColor(colorLiteralRed: 255/255, green: 156/255, blue: 132/255, alpha: 1)
+        subHeaderLabel.font = UIFont(name: "Chalet-NewYorkNineteenEighty", size: 18)
+        subHeaderLabel.sizeToFit()
+        //self.addSubview(subHeaderLabel)
+        
+        let tableViewY = headerView.bounds.height
+        
+        tableView = UITableView(frame: CGRect(x: self.bounds.width*0.05, y: tableViewY, width: self.bounds.width*0.9, height: self.bounds.height-tableViewY))
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(RecordingTableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.tableFooterView = UIView()
         self.addSubview(tableView)
         
         updateRecordings()
@@ -102,6 +114,10 @@ class DrawerView: UIView, UITableViewDelegate, UITableViewDataSource {
             recordings.append(recording)
         }
         
+        recordings.sort(by: { $0.creationDate!.timeIntervalSince1970 > $1.creationDate!.timeIntervalSince1970 })
+        
+        subHeaderLabel.text = "\(recordingURLs.count) out of 5"
+        
         tableView.reloadData()
         
     }
@@ -142,7 +158,7 @@ class DrawerView: UIView, UITableViewDelegate, UITableViewDataSource {
             
             let recording = recordings[indexPath.row]
             
-            SoundController.shared.deleteRecording(recording)
+            RecorderController.shared.delete(recording: recording)
             
             self.recordings.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)

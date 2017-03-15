@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class HomeViewController: UIViewController {
     @IBOutlet weak var listeningLabel: UILabel!
     @IBOutlet weak var menuButton: UIButton!
     @IBOutlet weak var recordButton: UIButton!
@@ -17,6 +17,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var instructionLabel: UILabel!
     
     var drawerView: DrawerView!
+    var darkOverlay: UIView!
     
     var statusBarView: UIView!
     
@@ -37,6 +38,10 @@ class ViewController: UIViewController {
         
         listeningLabelAnimationTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(listeningLabelAnimation(timer:)), userInfo: nil, repeats: true)
         
+        darkOverlay = UIView(frame: CGRect(x: 0, y: UIApplication.shared.statusBarFrame.height, width: view.bounds.width, height: view.bounds.height-UIApplication.shared.statusBarFrame.height))
+        darkOverlay.backgroundColor = .black
+        darkOverlay.alpha = 0
+        
         statusBarView = UIView(frame: CGRect(x: -view.bounds.width*0.8, y: 0, width: view.bounds.width*1.8, height: UIApplication.shared.statusBarFrame.height))
         self.statusBarView.backgroundColor = UIColor(colorLiteralRed: 255/255, green: 95/255, blue: 95/255, alpha: 1)
         
@@ -56,9 +61,9 @@ class ViewController: UIViewController {
         //drawer view is added/removed each time it's animated
         drawerView = DrawerView(frame: CGRect(x: 0, y: UIApplication.shared.statusBarFrame.height, width: view.bounds.width*0.8, height: view.bounds.height-UIApplication.shared.statusBarFrame.height))
         
-        SoundController.shared.startRecording()
-        
         setupAlertController()
+        
+        RecorderController.shared.setSessionAndRecord()
     
     }
     
@@ -79,13 +84,13 @@ class ViewController: UIViewController {
     
     func openDrawer() {
         
+        view.addSubview(darkOverlay)
         drawerView.center.x = -view.bounds.width*0.4
         view.addSubview(drawerView)
         
         UIView.animate(withDuration: 0.5) {
-            
             self.drawerView.center.x = self.view.bounds.width*0.4
-            
+            self.darkOverlay.alpha = 0.5
         }
         
         drawerView.isOpen = true
@@ -97,6 +102,7 @@ class ViewController: UIViewController {
         UIView.animate(withDuration: 0.5, animations: {
             
             self.drawerView.center.x = -self.view.bounds.width*0.4
+            self.darkOverlay.alpha = 0
             
         }, completion: {
             finished in
@@ -105,6 +111,7 @@ class ViewController: UIViewController {
                 
                 self.drawerView.center.x = self.view.bounds.width*0.4
                 self.drawerView.removeFromSuperview()
+                self.darkOverlay.removeFromSuperview()
                 
             }
             
@@ -116,7 +123,7 @@ class ViewController: UIViewController {
 
     func recordButtonPressed(sender: UIButton) {
         
-        SoundController.shared.saveSoundbite()
+        RecorderController.shared.saveSoundbite()
         
         UIView.animate(withDuration: 0.5) {
         
@@ -133,36 +140,30 @@ class ViewController: UIViewController {
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         
-        let saveAction = UIAlertAction(title: "Save", style: .default) {
+        let saveAction = UIAlertAction(title: "Save", style: .default) { [weak self]
             alert in
             
-            self.finishButton.alpha = 0
-            self.cancelButton.alpha = 0
-            self.instructionLabel.alpha = 1
+            self?.finishButton.alpha = 0
+            self?.cancelButton.alpha = 0
+            self?.instructionLabel.alpha = 1
             
-            if let textField = self.alertController.textFields?.first {
+            if let textField = self?.alertController.textFields?.first {
             
-                //overwrites any file with same name - fix in future
-                let filename = textField.text!
-                let encodedFilename = filename.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-                SoundController.shared.finishedSoundbiting(encodedFilename!) {
-                    success in
-                    
-                    if success {
-                        print("Success")
-                        DispatchQueue.main.async {
-                            SoundController.shared.startRecording()
-                        }
-                    } else {
-                        print("File already exists")
-                        DispatchQueue.main.async {
-                            self.present(self.alertController, animated: true)
-                            textField.text = ""
-                            textField.placeholder = "Error: Choose a different name"
-                        }
-                    }
-                    
+                let filename = "\(textField.text!).m4a"
+                let encodedFilename = filename.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+                textField.text = ""
+                let filePathToCheck = RecorderController.shared.finishedDirectory.appendingPathComponent(encodedFilename)
+                if FileManager.default.fileExists(atPath: filePathToCheck.path) {
+                    self?.present(self!.alertController, animated: true)
+                    textField.placeholder = "Error: Choose a different name"
+                    return
                 }
+                
+                RecorderController.shared.finishRecording(encodedFilename)
+                
+                self?.listeningLabel.text = "Saving"
+                
+                self?.perform(#selector(self?.changeListeningLabel), with: self, afterDelay: 3)
                 
             }
             
@@ -196,7 +197,7 @@ class ViewController: UIViewController {
             
             DispatchQueue.main.async {
             
-                SoundController.shared.restartRecording()
+                RecorderController.shared.cancelRecording()
                 self.instructionLabel.alpha = 1
                 self.finishButton.alpha = 0
                 self.cancelButton.alpha = 0
@@ -224,18 +225,25 @@ class ViewController: UIViewController {
     
     func listeningLabelAnimation(timer: Timer) {
         
-        UIView.animate(withDuration: 2) {
+        UIView.animate(withDuration: 2) { [weak self] in
             
-            if self.listeningLabel.alpha == 0 {
+            if self!.listeningLabel.alpha == 0 {
                 
-                self.listeningLabel.alpha = 1
+                self?.listeningLabel.alpha = 1
+                
             } else {
                 
-                self.listeningLabel.alpha = 0
+                self?.listeningLabel.alpha = 0
                 
             }
             
         }
+        
+    }
+    
+    func changeListeningLabel() {
+        
+        listeningLabel.text = "Listening"
         
     }
     
