@@ -136,20 +136,6 @@ import AVFoundation
     func setupPlayer() {
         
         do {
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-            try AVAudioSession.sharedInstance().overrideOutputAudioPort(AVAudioSessionPortOverride.speaker)
-        } catch let error as NSError {
-            print("could not set session category")
-            print(error.localizedDescription)
-        }
-        do {
-            try AVAudioSession.sharedInstance().setActive(true)
-        } catch let error as NSError {
-            print("could not make session active")
-            print(error.localizedDescription)
-        }
-        
-        do {
             try player = AVAudioPlayer(contentsOf: recording.url)
             player.delegate = self
             player.volume = 1.0

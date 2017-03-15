@@ -72,8 +72,6 @@ class DrawerView: UIView, UITableViewDelegate, UITableViewDataSource {
         tableView.tableFooterView = UIView()
         self.addSubview(tableView)
         
-        updateRecordings()
-        
         /*var yHeight = headerView.bounds.height
         
         var i = 0
@@ -107,8 +105,11 @@ class DrawerView: UIView, UITableViewDelegate, UITableViewDataSource {
         recordings.removeAll()
         
         for url in recordingURLs {
+            let url = URL(fileURLWithPath: url.path)
+            print(url)
             let asset = AVAsset(url: url)
             let name = url.deletingPathExtension().lastPathComponent
+            if asset.duration.seconds == 0 || asset.creationDate == nil { break }
             let recording = Recording(name, asset.duration.seconds, asset.creationDate!.dateValue!, url)
             
             recordings.append(recording)

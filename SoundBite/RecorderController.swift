@@ -241,7 +241,7 @@ class RecorderController: NSObject, AVAudioRecorderDelegate {
     @objc fileprivate func audioSessionRouteDidChange(notification: Notification) {
         
         print("AVAudioSessionRouteDidChange notification received")
-        //setSessionPlayAndRecord()
+        
         
     }
     

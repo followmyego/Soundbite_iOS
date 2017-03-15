@@ -56,13 +56,13 @@ class AudioFileMerger {
         assetExport?.exportAsynchronously {
             switch assetExport!.status {
             case .failed:
-                print("Failed")
+                print("Merge export failed")
                 break
             case .cancelled:
-                print("Cancelled")
+                print("Merge export cancelled")
                 break
             default:
-                print("Successfully exported!")
+                print("Merge successfully exported!")
                 break
             }
         }
