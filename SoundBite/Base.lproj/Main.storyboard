@@ -40,7 +40,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
                                 <state key="normal" title="Button" image="xIcon2"/>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Ready" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="st4-4n-9iP">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Listening" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="st4-4n-9iP">
                                 <rect key="frame" x="105" y="28" width="168" height="62"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="Chalet-NewYorkNineteenEighty" family="Chalet" pointSize="24"/>
@@ -52,7 +52,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <state key="normal" backgroundImage="button"/>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Tap the button to save the last 10 secs of recording." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="9ns-dH-ZTm">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Tap to start" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="9ns-dH-ZTm">
                                 <rect key="frame" x="45" y="512" width="284" height="72"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <fontDescription key="fontDescription" name="Chalet-NewYorkNineteenEighty" family="Chalet" pointSize="20"/>
@@ -71,8 +71,8 @@
                         <outlet property="cancelButton" destination="mPj-uf-xsu" id="Qy5-es-I65"/>
                         <outlet property="finishButton" destination="Lo8-Lb-WMI" id="6MP-1p-HJO"/>
                         <outlet property="instructionLabel" destination="9ns-dH-ZTm" id="JW6-5u-O6Q"/>
+                        <outlet property="listeningLabel" destination="st4-4n-9iP" id="ZTq-w8-wNs"/>
                         <outlet property="menuButton" destination="JEy-cO-hwk" id="Xow-1q-V3H"/>
-                        <outlet property="readyButton" destination="st4-4n-9iP" id="YM9-3i-aJK"/>
                         <outlet property="recordButton" destination="YWE-zK-kMu" id="e1l-v6-OQp"/>
                     </connections>
                 </viewController>

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		681D57071E78E38700CB6011 /* ExportController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681D57061E78E38700CB6011 /* ExportController.swift */; };
 		687D05F41E74DB4C005164B5 /* devkit in Resources */ = {isa = PBXBuildFile; fileRef = 687D05F31E74DB4C005164B5 /* devkit */; };
 		688B3C071E750068005E75E1 /* DrawerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688B3C061E750068005E75E1 /* DrawerView.swift */; };
 		688B3C091E750215005E75E1 /* RecordingViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688B3C081E750215005E75E1 /* RecordingViewCell.swift */; };
@@ -69,6 +70,7 @@
 
 /* Begin PBXFileReference section */
 		681D57051E78724500CB6011 /* SoundBite.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SoundBite.entitlements; sourceTree = "<group>"; };
+		681D57061E78E38700CB6011 /* ExportController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExportController.swift; sourceTree = "<group>"; };
 		687D05F31E74DB4C005164B5 /* devkit */ = {isa = PBXFileReference; lastKnownFileType = folder; path = devkit; sourceTree = "<group>"; };
 		688B3C061E750068005E75E1 /* DrawerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawerView.swift; sourceTree = "<group>"; };
 		688B3C081E750215005E75E1 /* RecordingViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordingViewCell.swift; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 				681D57051E78724500CB6011 /* SoundBite.entitlements */,
 				688DADD91E7468C900A3A7AD /* AppDelegate.swift */,
 				688DAE1D1E7482EF00A3A7AD /* SoundController.swift */,
+				681D57061E78E38700CB6011 /* ExportController.swift */,
 				688DADDB1E7468C900A3A7AD /* ViewController.swift */,
 				688B3C061E750068005E75E1 /* DrawerView.swift */,
 				688B3C0A1E750A4B005E75E1 /* Recording.swift */,
@@ -466,6 +469,7 @@
 				688B3C071E750068005E75E1 /* DrawerView.swift in Sources */,
 				688DADDA1E7468C900A3A7AD /* AppDelegate.swift in Sources */,
 				688B3C4B1E77208C005E75E1 /* RecordingTableViewCell.swift in Sources */,
+				681D57071E78E38700CB6011 /* ExportController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

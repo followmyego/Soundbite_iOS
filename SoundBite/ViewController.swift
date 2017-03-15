@@ -9,7 +9,7 @@
 import UIKit
 
 class ViewController: UIViewController {
-    @IBOutlet weak var readyButton: UILabel!
+    @IBOutlet weak var listeningLabel: UILabel!
     @IBOutlet weak var menuButton: UIButton!
     @IBOutlet weak var recordButton: UIButton!
     @IBOutlet weak var finishButton: UIButton!
@@ -22,6 +22,8 @@ class ViewController: UIViewController {
     
     let alertController = UIAlertController(title: "Save", message: "Title of clip", preferredStyle: .alert)
     
+    var listeningLabelAnimationTimer: Timer!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -29,15 +31,18 @@ class ViewController: UIViewController {
         
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(viewTapped(tap:))))
         
+        listeningLabel.alpha = 0
         finishButton.alpha = 0
         cancelButton.alpha = 0
+        
+        listeningLabelAnimationTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(listeningLabelAnimation(timer:)), userInfo: nil, repeats: true)
         
         statusBarView = UIView(frame: CGRect(x: -view.bounds.width*0.8, y: 0, width: view.bounds.width*1.8, height: UIApplication.shared.statusBarFrame.height))
         self.statusBarView.backgroundColor = UIColor(colorLiteralRed: 255/255, green: 95/255, blue: 95/255, alpha: 1)
         
         self.view.addSubview(self.statusBarView)
         
-        readyButton.font = UIFont(name: "Chalet-NewYorkNineteenEighty", size: 24)
+        finishButton.titleLabel?.font = UIFont(name: "Chalet-NewYorkNineteenEighty", size: 24)
         instructionLabel.font = UIFont(name: "Chalet-NewYorkNineteenEighty", size: 20)
 
         menuButton.addTarget(self, action: #selector(menuButtonPressed(sender:)), for: .touchUpInside)
@@ -213,6 +218,23 @@ class ViewController: UIViewController {
         
         if drawerView.isOpen {
             menuButtonPressed(sender: UIButton())
+        }
+        
+    }
+    
+    func listeningLabelAnimation(timer: Timer) {
+        
+        UIView.animate(withDuration: 2) {
+            
+            if self.listeningLabel.alpha == 0 {
+                
+                self.listeningLabel.alpha = 1
+            } else {
+                
+                self.listeningLabel.alpha = 0
+                
+            }
+            
         }
         
     }

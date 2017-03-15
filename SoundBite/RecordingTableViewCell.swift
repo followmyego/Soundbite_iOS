@@ -83,7 +83,17 @@ import AVFoundation
         let minutes = Int(recording.duration) / 60
         let seconds = Int(recording.duration.truncatingRemainder(dividingBy: 60))
         
-        return "\(minutes):\(seconds)"
+        var zeroPad1 = ""
+        var zeroPad2 = ""
+        
+        if minutes < 10 {
+            zeroPad1 = "0"
+        }
+        if seconds < 10 {
+            zeroPad2 = "0"
+        }
+        
+        return "\(zeroPad1)\(minutes):\(zeroPad2)\(seconds)"
         
     }
     
@@ -105,8 +115,6 @@ import AVFoundation
     }
     
     @IBAction func editButtonPressed(_ sender: Any) {
-        
-        
         
     }
     

@@ -40,9 +40,9 @@ class DrawerView: UIView, UITableViewDelegate, UITableViewDataSource {
         
         self.backgroundColor = .white
                 
-        self.layer.shadowOffset = CGSize(width: 5, height: 5)
-        self.layer.shadowOpacity = 0.5
-        self.layer.shadowRadius = 10
+        /*self.layer.shadowOffset = CGSize(width: self.bounds.width*0.25, height: 5)
+        self.layer.shadowOpacity = 0.25
+        self.layer.shadowRadius = 10*/
         
         headerView = UIImageView(frame: CGRect(x: 0, y: 0, width: self.bounds.width, height: self.bounds.height*0.22))
         headerView.image = UIImage(imageLiteralResourceName: "pulloutDesign")
@@ -57,7 +57,6 @@ class DrawerView: UIView, UITableViewDelegate, UITableViewDataSource {
         tableView = UITableView(frame: CGRect(x: self.bounds.width*0.05, y: headerView.bounds.height, width: self.bounds.width*0.9, height: self.bounds.height-headerView.bounds.height))
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.separatorStyle = .none
         tableView.register(RecordingTableViewCell.self, forCellReuseIdentifier: "Cell")
         self.addSubview(tableView)
         

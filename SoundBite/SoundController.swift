@@ -26,17 +26,15 @@ struct DirectoryNames {
     
 }
 
-class SoundController: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDelegate {
+class SoundController: NSObject, AVAudioRecorderDelegate {
     
     static let shared = SoundController()
     
-    var playerDelegate: SoundControllerPlayerDelegate?
     var recorderDelegate: SoundControllerRecorderDelegate?
         
     let session = AVAudioSession.sharedInstance()
     
     var recorder: AVAudioRecorder!
-    var player: AVAudioPlayer!
     
     var markers = [Int]()
     
@@ -282,25 +280,16 @@ class SoundController: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDelegate 
         format.dateFormat="yyyy-MM-dd-HH:mm:ss"
         //let currentFileName = "recording-\(format.string(from: Date())).m4a"
         let currentFileName = "recording\(getFileCount(DirectoryNames.rawfiles)).m4a"
-        print("Current filename: \(currentFileName)")
-        print()
         
-        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         let rawFileDirectory = documentsDirectory.appendingPathComponent(DirectoryNames.rawfiles)
         let soundFileURL = rawFileDirectory.appendingPathComponent(currentFileName)
-        print("Writing to url: '\(soundFileURL)'")
-        print()
-        
-        /*if FileManager.default.fileExists(atPath: soundFileURL.absoluteString) {
-            // probably won't happen. want to do something about it?
-            print("File \(soundFileURL.absoluteString) exists")
-        }*/
         
         let recordSettings:[String : AnyObject] = [
             AVFormatIDKey:             NSNumber(value: kAudioFormatAppleLossless),
             AVEncoderAudioQualityKey : NSNumber(value:AVAudioQuality.max.rawValue),
             AVEncoderBitRateKey :      NSNumber(value:320000),
-            AVNumberOfChannelsKey:     NSNumber(value:2),
+            AVNumberOfChannelsKey:     NSNumber(value:1),
             AVSampleRateKey :          NSNumber(value:44100.0)
         ]
         
@@ -323,10 +312,6 @@ class SoundController: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDelegate 
         
         if recorder != nil {
             recorder.deleteRecording()
-        }
-        
-        if player != nil && player.isPlaying {
-            player.stop()
         }
         
         if recorder == nil {
@@ -427,56 +412,6 @@ class SoundController: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDelegate 
             print(error.localizedDescription)
         }
         
-    }
-    
-    func playAudio(_ url: URL) {
-        
-        do {
-            self.player = try AVAudioPlayer(contentsOf: url)
-            player.delegate = self
-            player.prepareToPlay()
-            player.volume = 1.0
-            player.play()
-        } catch let error as NSError {
-            self.player = nil
-            print(error.localizedDescription)
-        }
-        
-    }
-    
-    func resumeAudio() {
-        
-        if self.player != nil {
-            if !self.player.isPlaying {
-                if player.delegate == nil {
-                    player.delegate = self
-                }
-                self.player.play()
-                if let playerDelegate = playerDelegate {
-                    playerDelegate.playerResumed(audioPlayer: player)
-                }
-            }
-        }
-        
-    }
-    
-    func pauseAudio() {
-        
-        if self.player != nil {
-            if self.player.isPlaying {
-                self.player.pause()
-                if let playerDelegate = playerDelegate {
-                    playerDelegate.playerPaused(audioPlayer: player)
-                }
-            }
-        }
-        
-    }
-    
-    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        if let delegate = playerDelegate {
-            delegate.playerFinishedPlaying(audioPlayer: player)
-        }
     }
     
     func deleteRecording(_ recording: Recording) {

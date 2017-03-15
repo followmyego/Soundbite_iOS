@@ -10,6 +10,8 @@ import UIKit
 import NotificationCenter
 
 class TodayViewController: UIViewController, NCWidgetProviding {
+    
+    @IBOutlet weak var recordButton: UIButton!
         
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,6 +22,13 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    @IBAction func recordButtonPressed(_ sender: Any) {
+        
+        
+        
+    }
+    
     
     func widgetPerformUpdate(_ completionHandler: (@escaping (NCUpdateResult) -> Void)) {
         // Perform any setup necessary in order to update the view.
