@@ -15,7 +15,7 @@ class AssetExporter {
     
     init() {}
     
-    func exportAsset(_ asset: AVAsset, _ directory: URL, _ targetFilename: String, _ markers: [Int]) {
+    func exportAsset(_ asset: AVAsset, _ directory: URL, _ targetFilename: String, _ markers: [Int], completion: @escaping (_ success: Bool) -> Void) {
         
         let fileManager = FileManager.default
         
@@ -60,14 +60,18 @@ class AssetExporter {
                     break
                 default:
                     print("Export Successfully Finished")
+                    
                     break
                 }
                 
                 exportedFiles += 1
                 if exportedFiles == filesToExport {
-                    //DispatchQueue.main.async {
-                    AudioFileMerger.shared.mergeAudio(targetFilename)
-                    //}
+                    AudioFileMerger.shared.mergeAudio(targetFilename) {
+                        success in
+                        
+                        completion(success)
+                        
+                    }
                 }
                 
             }

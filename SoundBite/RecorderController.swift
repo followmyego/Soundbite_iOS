@@ -128,11 +128,26 @@ class RecorderController: NSObject, AVAudioRecorderDelegate {
             
             let url = audioRecorder.url
             let asset = AVAsset(url: url)
-            AssetExporter.shared.exportAsset(asset, bitsDirectory, soundbiteName, markers)
+            AssetExporter.shared.exportAsset(asset, bitsDirectory, soundbiteName, markers) {
+                success in
+                
+                if success {
+                
+                    DispatchQueue.main.async {
+                        
+                        self.deleteAllRecordings(self.rawDirectory)
+                        self.deleteAllRecordings(self.bitsDirectory)
+                        
+                        self.audioRecorder = nil
+                
+                        self.setSessionAndRecord()
+                        
+                    }
+                    
+                }
+                
+            }
             
-            audioRecorder = nil
-            
-            setSessionAndRecord()
             
         }
         
@@ -254,8 +269,8 @@ class RecorderController: NSObject, AVAudioRecorderDelegate {
     
     func setSessionAndRecord() {
         
-        deleteAllRecordings(rawDirectory)
-        deleteAllRecordings(bitsDirectory)
+        //deleteAllRecordings(rawDirectory)
+        //deleteAllRecordings(bitsDirectory)
         
         let session = AVAudioSession.sharedInstance()
         

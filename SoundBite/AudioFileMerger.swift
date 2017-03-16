@@ -13,7 +13,7 @@ class AudioFileMerger {
     
     static let shared = AudioFileMerger()
     
-    func mergeAudio(_ targetFilename: String) {
+    func mergeAudio(_ targetFilename: String, completion: @escaping (_ success: Bool) -> Void) {
         
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         
@@ -57,12 +57,15 @@ class AudioFileMerger {
             switch assetExport!.status {
             case .failed:
                 print("Merge export failed")
+                completion(false)
                 break
             case .cancelled:
                 print("Merge export cancelled")
+                completion(false)
                 break
             default:
                 print("Merge successfully exported!")
+                completion(true)
                 break
             }
         }
